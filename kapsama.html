@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compotible" content ="ie-edge">
+    <meta name="author" content="Serpil Akkurt">
+    <title>KAPSAMA ALGORİTMASI</title>
+        <style>
+            .header{
+                text-align: center;
+                background: red;
+                font-family: sans-serif;
+                font-size: 18px;
+            }
+            .container{
+                text-align: center;
+                font-size: 20px;
+            }
+            label{
+                display: block;
+            }
+            td{
+                border:1px solid red;
+                width: 20px;
+            }
+            table,tr{
+                border:1px solid red;
+                height: 20px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            button{
+                margin-left: auto;
+                margin-right: auto;
+            }
+           #kume{
+               background-color: aquamarine;
+               color: brown;
+            }
+         
+        </style>
+</head>
+<body>
+
+    <div class="header">
+    <h1>KAPSAMA ALGORİTMASI</h1> 
+    </div>
+    <hr>
+    <div class="container">
+    <label>Satır Sayısı</label> 
+    <input type="number" id="satir">
+    <label> Sütun Sayısı</label>
+    <input type="number" id="sutun">
+    <br>
+    <label><button  id="olustur"> OLUŞTUR </button></label> 
+    </br>
+    <div id="kume"></div> <div id="goster">   <div id="mesaj">Mavi işaretli satır mutlak satırdır.<br> Mutlak satır ve mutlak satırın kapsadığı sütunlar silinsin mi?</br></div>
+    <div id="mesaj2"><br>Pembe işaretli satır; ağırlığı en az olan satırdır. Silinsin mi?</br> </div><div id="mesaj3">Ağırlığı 0 olan sütun var. Silinsin mi? </div>
+</div></div>  <div></div>
+
+        <script>
+            var mesaj= document.getElementById("mesaj");
+            var mesaj2= document.getElementById("mesaj2");
+            var mesaj3= document.getElementById("mesaj3");
+            var kume=document.getElementById("kume");
+            mesaj.style.display="none"; 
+            mesaj2.style.display="none"; 
+            mesaj3.style.display="none"; 
+            kume.style.display="none"; 
+            var kapsama=new Array();
+            var kapsama2=new Array();
+            var olustur =document.getElementById("olustur");
+            olustur.onclick=function(){
+               var sayac=-1;
+               var sayac2 = -1;
+                var satir=document.getElementById("satir").value;
+                var sutun=document.getElementById("sutun").value;
+                var table= document.createElement("table");
+                
+                if((satir==null)||(sutun==null)){
+                    alert("Lütfen bilgileri eksiksiz giriniz.");
+                }else if((satir<=0)||(sutun<=0)){
+                    alert("Geçersiz Sayı!")
+                }
+                else
+                {
+                    ++satir;
+                    ++sutun;
+                    for(var i=0; i<=satir; i++)
+                    {
+                        var tr=document.createElement("tr");
+                        tr.setAttribute("id", "tr1");
+                        tr.setAttribute("name", "tr1");
+                        table.appendChild(tr);
+                        sayac2++;
+                        for(var j=0; j<=sutun; j++)
+                        {   
+                            var td= document.createElement("td");
+                            
+                            td.setAttribute("id", "td1");
+                            td.setAttribute("name", "td1");
+                            tr.appendChild(td);
+                            if((j!=0)&&(i!=0)&&(i!=satir)&&(j!=sutun)){
+                              td.innerHTML="0";
+                            }
+                            if((j==0)&&(i!=0)&&(i!=satir)){
+                                tr.innerHTML=sayac2;
+                            }
+                            if((i==0)&&(j==sutun)){
+                                td.innerHTML="Ağırlık";
+                            }
+                         
+                            sayac++;
+                            if((i==0)&&(j!=0)&&(j!=sutun)){
+                                td.innerHTML=sayac;
+                            }
+
+                            if((i>0)&&(j>0))
+                            { 
+                                if(td.innerHTML=="0")
+                                { 
+                                        td.ondblclick=function()
+                                        {
+                                            this.innerHTML="1";
+                                                if(this.innerHTML=="1")
+                                                {
+                                                    this.ondblclick=function()
+                                                    {
+                                                    this.innerHTML="0";
+                                                    }
+                                                }
+                                        }   
+                                 }
+                               
+                            }//if
+                         
+                        }//for
+                    
+                    } //for
+                    --satir;
+                    --sutun;
+            var btn= document.createElement("button");
+            btn.innerHTML="HESAPLA";   
+            document.getElementById("goster").innerHTML=" ";
+            document.getElementById("goster").appendChild(table);
+            document.getElementById("goster").appendChild(btn);
+            document.getElementById("goster").appendChild(mesaj);
+            document.getElementById("goster").appendChild(mesaj2);
+            document.getElementById("goster").appendChild(mesaj3);
+
+
+            var sil=document.createElement("button");
+            sil.innerHTML="SİL";
+
+            btn.onclick=function(){
+            mesaj.appendChild(sil);     
+            var adet=0;
+            var adetArray=new Array();
+            var boyaArray=new Array();
+            var kume2= new Array();
+            var k=1;
+            var t=1;
+            var mutlakSutun=0;
+            var mutlakSatir;
+            var bulundu=0;
+            var temizleme=0;
+            var sifir=0;
+            var deneme=0;
+
+            temizleme++;
+
+                for( k=0; k< sutun; k++)
+                {
+                    for( t=1; t<= satir; t++)
+                    { 
+                        if(table.rows[t].cells[k].innerHTML == "1")
+                        {
+                            adet++;
+                        }
+                    } 
+                    satir++;
+                    adetArray[k+1]=adet;
+                    table.rows[satir].cells[k+1].innerHTML = adet;
+                    adet=0;
+                    satir--;
+                   
+                }
+
+
+                satir++;
+                for(var z=1; z<=sutun; z++)
+                {
+                    if(table.rows[satir].cells[z].innerHTML=="0"){
+                        sifir++;
+                        mesaj.style.display="none";
+                        mesaj2.style.display="none";
+                        mesaj3.appendChild(sil);
+                        mesaj3.style.display=""; 
+                    }
+                }
+                satir--;
+                
+
+                for(var s=1; s <= sutun; s++)
+                {
+                    satir++;
+                    if(table.rows[satir].cells[s].innerHTML == "1"){
+                        mutlakSutun=s;
+                        bulundu++;
+                        if(bulundu>0)
+                        {
+                            for(var p=1; p< satir; p++)
+                            {
+                                if(table.rows[p].cells[mutlakSutun-1].innerHTML=="1")
+                                {
+                                    mutlakSatir=p;
+                                    table.rows[mutlakSatir].style.background="#00bfff";
+                                     kapsama[p]=mutlakSatir;
+                                }
+                            }
+                        }
+                    }
+                    satir--;
+                }
+               
+
+                       if(mutlakSatir>=1)
+                        {
+                            for(var l=0; l<=sutun; l++)
+                            {
+                                if(table.rows[mutlakSatir].cells[l].innerHTML=="1")
+                                {
+                                    for(var m=1; m<=satir; m++)
+                                    {
+                                        table.rows[m].cells[l].style.background="#00bfff";
+                                        
+                                    }
+                                    
+                                }
+                            }
+                            mesaj.style.display="";
+
+                        }
+                        
+                       
+                        
+                        sil.onclick=function()
+                        {
+
+                            if((mutlakSatir>=1)&&(sifir==0))
+                            {
+                                sutun--;
+                                for(var v=sutun; v>=0; v--)
+                                {
+                                    if(table.rows[mutlakSatir].cells[v].innerHTML=="1")
+                                    {
+                                        satir++;
+                                        table.rows[0].removeChild(table.rows[0].cells[v+1]);
+                                        table.rows[satir].removeChild(table.rows[satir].cells[v+1]);
+                                        for(var n=1; n<satir; n++)
+                                        {
+                                            table.rows[n].removeChild(table.rows[n].cells[v]);
+                                        }
+                                        sutun--;
+                                        satir--;
+                                    }
+                                } 
+                                table.removeChild(table.rows[mutlakSatir]);
+                                satir--;
+                                sutun++;
+
+                                mesaj.style.display="none";
+
+                            }   
+
+
+                            if((mutlakSutun==0)&&(sifir==0))
+                            {
+                                if(kontrol==1){
+                                    table.removeChild(table.rows[sira]); 
+                                    satir--;
+                                }
+                                if(kontrol==2){
+                                    table.removeChild(table.rows[sira]); 
+                                    satir--;
+                                    table.removeChild(table.rows[sira2]); 
+                                    satir--;
+                            
+                                }
+                                 
+                               kontrol=0;  
+                               mesaj2.style.display="none";
+                            }
+                           
+                            satir++;
+                            if(sifir>0)
+                            {
+                                for(var g=sutun; g>=1; g--)
+                                {
+                                    if(table.rows[satir].cells[g].innerHTML=="0"){
+                                    table.rows[0].removeChild(table.rows[0].cells[g]);
+                                    table.rows[satir].removeChild(table.rows[satir].cells[g]);
+                                    for(var u=1; u<satir; u++)
+                                    {
+                                        table.rows[u].removeChild(table.rows[u].cells[g-1]);
+                                    }
+                                    sutun--;
+                                    break;  
+                                    }
+
+                                }
+                                  mesaj3.style.display="none";
+                            } 
+                            satir--; 
+                            
+                        }//sil.onclick  
+
+
+                    
+
+
+                 if((mutlakSutun==0)&&(sifir==0)){
+                    
+                    mesaj2.appendChild(sil); 
+
+                    var toplam=0;
+                    var sonuc =0;
+                    satir++;
+                    var temp=0;
+
+
+                    for(var e=1; e<adetArray.length; e++)
+                    {
+                        for(var f=2; f<adetArray.length; f++) 
+                        { 
+                            if(adetArray[f-1]>adetArray[f])
+                            {
+                                temp=adetArray[f];
+                                adetArray[f]=adetArray[f-1];
+                                adetArray[f-1]=temp;
+                            }
+                        }
+                    }
+                    
+
+                    var min = adetArray[1];
+
+                    for(var a=0; a<=sutun; a++)
+                    {   
+                        if( table.rows[satir].cells[a+1].innerHTML == min)
+                        {
+                            for(var b=1; b< satir; b++)
+                            {    
+                                if(table.rows[b].cells[a].innerHTML=="1")
+                                {
+                                    for(var c=0; c<=sutun; c++)
+                                    {
+                                        if(table.rows[b].cells[c].innerHTML=="1")
+                                        {
+                                            toplam=toplam + (1 / (table.rows[satir].cells[c+1].innerHTML));
+                                        }
+                                    }
+                                       
+                                    satir--;
+                                    sonuc = satir * toplam;
+                                    sonuc=sonuc.toFixed(2);
+                                    sonuc=parseFloat(sonuc);
+                                    table.rows[b].cells[sutun].innerHTML=sonuc;
+                                    boyaArray[b]=sonuc;
+                                    toplam=0;
+                                    sonuc=0;
+                                    satir++;
+                                }
+                                
+                            }
+                        }
+                        
+                    }                   
+                    satir--;
+
+
+                    var ek=0;
+                    var dene=0;  
+                    var kontrol=0;
+                    var sira2=0;
+
+
+                    for(var q=0; q<boyaArray.length; q++){
+                        if(boyaArray[q]== null)
+                        boyaArray[q]=0;
+                    }
+
+                     
+                    for(var y=0; y<boyaArray.length; y++)
+                    {
+                        for(var r=1; r<boyaArray.length; r++) 
+                        { 
+                            if(boyaArray[r-1]>boyaArray[r])
+                            {
+                                dene=boyaArray[r];
+                                boyaArray[r]=boyaArray[r-1];
+                                boyaArray[r-1]=dene;
+                            }
+                        }
+                    } 
+
+                    for(var o=0; o <= boyaArray.length; o++)
+                    {
+                        if(boyaArray[o]>0){
+                            ek=boyaArray[o];
+                            break;
+                        }
+                       
+                    }
+
+                    
+
+                   for(var x=1; x<=satir; x++){
+
+                        if(table.rows[x].cells[sutun].innerHTML == ek)
+                        {
+                            table.rows[x].style.background="pink";
+                            kontrol++;
+                            if(kontrol==1){
+                               var sira=x;
+                            }
+                            if(kontrol==2){
+                              sira2=x-1;
+                              kapsama2[x]=x;
+                            }
+
+                        }
+                  
+                   } 
+ 
+                   for(var atama=0; atama<kapsama.length; atama++){
+                     if(kapsama[atama] ==null){
+                        kapsama[atama]=0;
+                     }
+                 }
+                 
+                 for(var atama2=0; atama2<kapsama2.length; atama2++){
+                    if(kapsama2[atama2]==null){
+                        kapsama2[atama2]=0;
+                     }
+                 }
+                 for(var duzen=0; duzen<=kapsama.length; duzen++){
+                     if(kapsama[duzen]==0){
+                         kapsama.splice(duzen,1);
+
+                     }
+                 }
+                 for(var duzen2=0; duzen2<=kapsama.length; duzen2++){
+                     if(kapsama2[duzen2]==0){
+                         kapsama2.splice(duzen2,1);
+                     }
+                 }
+
+
+                 kume.innerHTML="Kapsama kümesinin indisleri: " + kapsama + "," + kapsama2;
+
+                 }//mutlakSutun
+                 
+                   if((mutlakSutun==0)&&(sifir==0)){
+                    mesaj2.style.display="";
+                   }
+
+                 if((satir<=2)||(sutun<=1)){
+
+                    document.getElementById("goster").style.display="none";
+                    kume.style.display="";
+
+                    
+                }
+              
+            
+
+              } //btn.onclick
+              
+           }//else
+         }    
+            
+    </script>
+</body>
+</html>
